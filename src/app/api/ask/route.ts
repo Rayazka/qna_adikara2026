@@ -1,0 +1,40 @@
+/**
+ * @file    src/app/api/ask/route.ts
+ * @brief   Terima pertanyaan anonim: validasi, rate-limit, delegasi ke Controller
+ * @author  ray
+ * @created 2026-10-08
+ * @todo    none
+ */
+// Adapter tipis: parsing body + IP client → askController. Pesan error controller
+// (bahasa Indonesia) diteruskan apa adanya; error tak dikenal menjadi 500 generik.
+import { NextResponse } from "next/server";
+import { createQuestionFlow } from "@/controllers/askController";
+
+function clientIp(request: Request): string {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+}
+
+export async function POST(request: Request) {
+  let payload: { nama?: unknown; isi?: unknown; category_slug?: unknown };
+  try {
+    payload = (await request.json()) as typeof payload;
+  } catch {
+    return NextResponse.json({ error: "Body harus JSON valid" }, { status: 400 });
+  }
+  if (typeof payload.nama !== "string" || typeof payload.isi !== "string" || typeof payload.category_slug !== "string") {
+    return NextResponse.json({ error: "nama, isi, dan category_slug wajib diisi" }, { status: 400 });
+  }
+  try {
+    const id = await createQuestionFlow({
+      nama: payload.nama,
+      isi: payload.isi,
+      categorySlug: payload.category_slug,
+      ip: clientIp(request),
+    });
+    return NextResponse.json({ id });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Gagal menyimpan pertanyaan";
+    const status = message.includes("menit") ? 429 : 400;
+    return NextResponse.json({ error: message }, { status });
+  }
+}

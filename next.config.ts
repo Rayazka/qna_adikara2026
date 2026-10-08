@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  /* Cache Components dimatikan: butuh pola Suspense khusus untuk route dinamis
+     (cookies/params), belum sepadan untuk ultra-MVP 1-3 hari. */
+  cacheComponents: false,
   turbopack: {
     rules: {
       "*.css": {
