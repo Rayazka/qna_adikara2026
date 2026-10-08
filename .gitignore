@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local planning docs (PRD, tech spec, tasks, plans) — tidak di-push
+.agents/
+docs/
