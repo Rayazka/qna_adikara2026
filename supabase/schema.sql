@@ -52,6 +52,12 @@ alter table categories enable row level security;
 alter table questions enable row level security;
 alter table replies enable row level security;
 alter table votes enable row level security;
+-- RLS aktif di admins agar statusnya deterministik (bukan tergantung cara tabel dibuat),
+-- dengan policy baca publik karena user_id hanyalah UUID acak. Tanpa policy ini,
+-- dashboard yang membuat tabel manual via UI akan membuat SELECT selalu kosong
+-- dan subquery auth.uid() di policy lain ikut gagal.
+alter table admins enable row level security;
+create policy "public read admins" on admins for select using (true);
 
 create policy "public read categories" on categories for select using (true);
 create policy "public read questions" on questions for select using (true);
