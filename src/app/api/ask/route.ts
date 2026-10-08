@@ -3,17 +3,20 @@
  * @brief   Terima pertanyaan anonim: validasi, rate-limit, delegasi ke Controller
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Teruskan kode Turnstile dari client saat site key tersedia
+ *          - Tambah logging server untuk pola spam berulang
  */
 // Adapter tipis: parsing body + IP client → askController. Pesan error controller
 // (bahasa Indonesia) diteruskan apa adanya; error tak dikenal menjadi 500 generik.
 import { NextResponse } from "next/server";
 import { createQuestionFlow } from "@/controllers/askController";
 
+// Tujuan: ambil IP asli di balik proxy Vercel untuk rate-limit yang adil per pengirim.
 function clientIp(request: Request): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 }
 
+// Tujuan: terima form tanya dan kembalikan id agar board langsung memuat item baru.
 export async function POST(request: Request) {
   let payload: { nama?: unknown; isi?: unknown; category_slug?: unknown };
   try {

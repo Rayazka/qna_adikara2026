@@ -1,4 +1,10 @@
-// Uji hash voter deterministik sebelum implementasi ada.
+/**
+ * @file    src/lib/__tests__/voteHash.test.ts
+ * @brief   Uji determinisme hash voter sebelum implementasi dipakai
+ * @author  ray
+ * @created 2026-10-08
+ * @todo    - Tambah kasus UA kosong dan IP IPv6
+ */
 import { expect, it } from "vitest";
 import { hashVoter } from "../voteHash";
 

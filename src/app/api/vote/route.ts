@@ -3,17 +3,20 @@
  * @brief   Terima vote anonim satu-kali: hash voter, delegasi ke Controller
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah endpoint cabut vote bila aturan event berubah
+ *          - Normalisasi IPv6 agar hash antar format konsisten
  */
 // Vote ganda dari voter sama ditolak DB (unique) dan dipetakan menjadi 409
 // "Kamu sudah vote pertanyaan ini" agar client menandai tombol sebagai selesai.
 import { NextResponse } from "next/server";
 import { addVoteFlow } from "@/controllers/voteController";
 
+// Tujuan: ambil IP asli sebagai separuh bahan hash identitas voter.
 function clientIp(request: Request): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 }
 
+// Tujuan: catat vote dan kembalikan counter terbaru untuk update tombol seketika.
 export async function POST(request: Request) {
   let payload: { question_id?: unknown };
   try {

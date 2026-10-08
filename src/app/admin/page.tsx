@@ -3,7 +3,8 @@
  * @brief   Entry route dashboard admin dengan guard login via redirect
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Pindahkan guard ke middleware edge saat proteksi penuh siap
+ *          - Tambah judul halaman dinamis per peran admin
  */
 // Server Component: cek isAdmin() sebelum merender AdminView yang memuat data.
 import { Suspense } from "react";
@@ -13,6 +14,7 @@ import { AdminView } from "@/views/AdminView";
 
 // Guard auth membaca cookies sehingga dibungkus Suspense: halaman tetap bisa
 // di-prerender sebagai shell, isi dashboard streaming setelah cookies terbaca.
+// Tujuan: sediakan shell streaming agar halaman admin tetap prarender walau butuh cookies.
 export default function Admin() {
   return (
     <Suspense fallback={<p className="p-4 text-sm text-gray-500">Memuat dashboard...</p>}>
@@ -21,6 +23,7 @@ export default function Admin() {
   );
 }
 
+// Tujuan: tolak non-admin ke halaman login sebelum data dashboard dimuat.
 async function AdminGate() {
   if (!(await isAdmin())) redirect("/admin/login");
   return <AdminView />;

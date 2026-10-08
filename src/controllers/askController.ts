@@ -4,6 +4,7 @@
  * @author  ray
  * @created 2026-10-08
  * @todo    - Aktifkan verifikasi Turnstile saat site key tersedia (T-20)
+ *          - Catat metrik pertanyaan per kategori untuk laporan panitia
  */
 // Controller tidak render JSX dan tidak query DB langsung; semua tulis lewat Model.
 // Dipakai Route Handler POST /api/ask. Turnstile best-effort: dilewati jika secret kosong.
@@ -19,6 +20,7 @@ export interface AskInput {
   ip: string;
 }
 
+// Tujuan: jadikan satu pintu pembuatan pertanyaan agar urutan validasi→limit→simpan konsisten.
 export async function createQuestionFlow(input: AskInput): Promise<string> {
   const namaError = validateNama(input.nama);
   if (namaError) throw new Error(namaError);

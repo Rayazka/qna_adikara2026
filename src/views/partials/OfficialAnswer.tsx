@@ -3,12 +3,14 @@
  * @brief   Render blok jawaban resmi admin yang selalu di atas daftar reply
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tampilkan stempel waktu jawaban agar keterbaruan jelas
+ *          - Tambah tombol salin jawaban untuk sebar ke grup
  */
 // Hanya reply bertanda is_official yang masuk sini; reply lain dirender ReplyList.
 // Warna memakai merah brand + pink pola sesuai token (bukan hijau generik).
 import type { Reply } from "@/models/types";
 
+// Tujuan: pastikan jawaban resmi selalu terlihat pertama agar peserta tidak salah ikut info lama.
 export function OfficialAnswer({ reply }: { reply: Reply | undefined }) {
   if (!reply) return null;
   return (

@@ -3,12 +3,14 @@
  * @brief   Query tabel categories (daftar + cari slug) untuk filter dan validasi
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Cache daftar kategori per menit untuk hemat query board
+ *          - Tambah fungsi hitung pertanyaan per kategori untuk badge
  */
 // Satu-satunya tempat yang boleh SELECT categories; Controller/View memanggil fungsi ini.
 import { supabaseServer } from "@/lib/supabaseServer";
 import type { Category } from "./types";
 
+// Tujuan: sediakan daftar kategori untuk dropdown form dan validasi slug.
 export async function listCategories(): Promise<Category[]> {
   const supabase = await supabaseServer();
   const { data, error } = await supabase
@@ -20,6 +22,7 @@ export async function listCategories(): Promise<Category[]> {
   return data;
 }
 
+// Tujuan: ubah slug pilihan user menjadi id FK; null berarti slug manipulasi → tolak 400.
 export async function findCategoryBySlug(slug: string): Promise<Category | null> {
   const supabase = await supabaseServer();
   const { data, error } = await supabase

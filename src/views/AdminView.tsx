@@ -4,6 +4,7 @@
  * @author  ray
  * @created 2026-10-08
  * @todo    - Tambah filter Belum Terjawab/per kategori/search saat waktu ada (T-18 susulan)
+ *          - Tambah ringkasan angka (total, belum jawab, vote) di atas tabel
  */
 // Server Component: guard isAdmin() di page memanggil ini, jadi data boleh
 // dibaca langsung via Model server. Aksi memakai Server Actions (adminActions)
@@ -21,6 +22,7 @@ import {
 import { CATEGORY_SLUGS } from "@/models/validation";
 import { Header } from "./partials/Header";
 
+// Tujuan: beri panitia satu meja kerja untuk jawab, sorot, klasifikasikan, dan bersihkan.
 export async function AdminView() {
   const rows = await listQuestions(100);
 
@@ -92,6 +94,7 @@ export async function AdminView() {
 }
 
 // Daftar reply per pertanyaan beserta tombol jadikan-resmi dan hapus.
+// Tujuan: moderasi reply per pertanyaan tanpa pindah halaman (resmi/hapus di tempat).
 async function ReplyModeration({ questionId }: { questionId: string }) {
   const replies = await listRepliesByQuestion(questionId);
   if (replies.length === 0) return null;

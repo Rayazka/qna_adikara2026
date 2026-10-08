@@ -3,17 +3,20 @@
  * @brief   Terima reply anonim/peserta/admin: validasi, rate-limit, delegasi
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Batasi panjang reply admin berbeda dari peserta bila perlu
+ *          - Tambah idempotency key agar retry tidak ganda
  */
 // Adapter tipis di atas replyController; penulis admin otomatis berlabel ADMIN
 // oleh server (lihat controller), jadi client tidak mengirim peran apa pun.
 import { NextResponse } from "next/server";
 import { createReplyFlow } from "@/controllers/replyController";
 
+// Tujuan: ambil IP asli untuk rate-limit reply yang adil per pengirim.
 function clientIp(request: Request): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 }
 
+// Tujuan: terima tanggapan dan kembalikan id agar detail langsung memuat reply baru.
 export async function POST(request: Request) {
   let payload: { question_id?: unknown; nama?: unknown; isi?: unknown };
   try {

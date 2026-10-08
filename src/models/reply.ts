@@ -3,7 +3,8 @@
  * @brief   Query tabel replies (list flat + tulis + tandai resmi + hapus)
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Bungkus setOfficial dalam RPC transaksional tunggal
+ *          - Tambah retensi hapus balasan lama pasca-event bila perlu
  */
 // Reply selalu flat kronologis tanpa vote. Penetapan jawaban resmi dilakukan
 // berurutan (unset lama → set baru → tandai terjawab) karena supabase-js
@@ -12,6 +13,7 @@ import { supabaseServer } from "@/lib/supabaseServer";
 import { setAnswered } from "./question";
 import type { Reply } from "./types";
 
+// Tujuan: muat diskusi flat kronologis agar jawaban resmi mudah dipisah di atas.
 export async function listRepliesByQuestion(questionId: string): Promise<Reply[]> {
   const supabase = await supabaseServer();
   const { data, error } = await supabase
@@ -24,6 +26,7 @@ export async function listRepliesByQuestion(questionId: string): Promise<Reply[]
   return data;
 }
 
+// Tujuan: simpan tanggapan peserta/admin langsung tampil tanpa antre moderasi.
 export async function createReply(input: {
   questionId: string;
   nama: string;
@@ -46,6 +49,7 @@ export async function createReply(input: {
 }
 
 // Hanya satu jawaban resmi per pertanyaan: yang lama otomatis turun jadi reply biasa.
+// Tujuan: tetapkan satu jawaban resmi sekaligus tandai pertanyaan Terjawab.
 export async function setOfficial(questionId: string, replyId: string): Promise<void> {
   const supabase = await supabaseServer();
   const { error: unsetError } = await supabase
@@ -62,6 +66,7 @@ export async function setOfficial(questionId: string, replyId: string): Promise<
   await setAnswered(questionId, true);
 }
 
+// Tujuan: hapus reply spam manual tanpa mengganggu pertanyaan dan reply lain.
 export async function removeReply(id: string): Promise<void> {
   const supabase = await supabaseServer();
   const { error } = await supabase.from("replies").delete().eq("id", id);

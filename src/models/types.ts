@@ -3,7 +3,8 @@
  * @brief   Definisikan tipe baris DB untuk seluruh layer MVC QnA ADIKARA
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah tipe PaginatedResult saat list melebihi 100 baris
+ *          - Sinkronkan tipe dengan generate supabase-types bila skema berubah
  */
 // Tipe tunggal kebenaran: Model mengembalikan tipe ini, Controller/View mengonsumsinya.
 // created_at memakai string ISO agar aman lewat batas server/client Next.js.

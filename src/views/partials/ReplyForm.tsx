@@ -3,7 +3,8 @@
  * @brief   Render form tanggapan peserta/admin di halaman detail pertanyaan
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Isi otomatis nama dari pertanyaan terakhir user
+ *          - Tambah pratinjau sebelum kirim untuk cegah salah ketik
  */
 // Mengirim ke POST /api/reply; penulis login-admin otomatis berlabel ADMIN
 // oleh server sehingga form tidak butuh pilihan peran. Sukses → onSent reload list.
@@ -11,6 +12,7 @@
 
 import { useState } from "react";
 
+// Tujuan: tampung tanggapan lanjutan tanpa memecah alur baca diskusi.
 export function ReplyForm({
   questionId,
   onSent,
@@ -23,6 +25,7 @@ export function ReplyForm({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  // Tujuan: kirim tanggapan lalu kosongkan form agar user bisa langsung menulis lagi.
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (busy) return;

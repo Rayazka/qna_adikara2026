@@ -3,12 +3,14 @@
  * @brief   Render header brand ADIKARA dengan logo dan tautan utama
  * @author  ray
  * @created 2026-10-08
- * @todo    - Ganti emoji dengan Assets/adikara-logo.webp saat final (T-19)
+ * @todo    - Ganti teks brand dengan Assets/adikara-logo.webp saat final (T-19)
+ *          - Tambah tautan kategori populer untuk navigasi cepat
  */
 // Header dipakai BoardView, DetailView, dan AdminView agar identitas konsisten.
 // Warna selalu via CSS variable brand (lihat globals.css), tanpa hardcode hex.
 import Link from "next/link";
 
+// Tujuan: tampilkan identitas brand di setiap halaman agar user yakin di situs resmi.
 export function Header() {
   return (
     <header className="border-b" style={{ backgroundColor: "var(--background)" }}>

@@ -3,7 +3,8 @@
  * @brief   Render form tanya cepat tanpa login di atas board
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah penghitung sisa karakter agar user tahu batas
+ *          - Simpan draf ke localStorage agar tidak hilang saat reload
  */
 // Mengirim ke POST /api/ask; error server (validasi/rate-limit) ditampilkan
 // berbahasa Indonesia di bawah form. Sukses → reset + panggil onCreated agar board reload.
@@ -21,6 +22,7 @@ const LABELS: Record<string, string> = {
   cybersecurity: "Cybersecurity",
 };
 
+// Tujuan: turunkan friksi bertanya hingga 30 detik: nama + kategori + isi lalu terkirim.
 export function AskForm({ onCreated }: { onCreated: () => void }) {
   const [nama, setNama] = useState("");
   const [isi, setIsi] = useState("");
@@ -28,6 +30,7 @@ export function AskForm({ onCreated }: { onCreated: () => void }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  // Tujuan: validasi ringan di client dulu agar error server yang mahal jarang terjadi.
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (busy) return;

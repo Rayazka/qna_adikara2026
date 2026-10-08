@@ -3,7 +3,8 @@
  * @brief   Render kartu ringkas pertanyaan di board dengan status dan vote
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tampilkan cuplikan jawaban resmi 1 baris di kartu
+ *          - Tambah waktu relatif (mis. 5 mnt lalu) ganti tanggal mentah
  */
 // Kartu menampilkan badge kategori, status Terjawab/Belum, pin, nama penanya,
 // dan tombol vote. Klik isi membuka halaman detail shareable /q/[id].
@@ -11,6 +12,7 @@ import Link from "next/link";
 import type { Question } from "@/models/types";
 import { VoteButton } from "./VoteButton";
 
+// Tujuan: ringkas satu pertanyaan menjadi kartu pindai-cepat (status, kategori, vote).
 export function QuestionCard({ question }: { question: Question }) {
   return (
     <article className="rounded border p-3" style={{ backgroundColor: "var(--background)" }}>

@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     "Papan tanya jawab resmi ADIKARA — Umum, Inovasi, Entrepreneur, Data Mining, Competitive Programming, Cybersecurity",
 };
 
+// Tujuan: bungkus semua halaman dengan shell HTML + font + metadata Indonesia.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html

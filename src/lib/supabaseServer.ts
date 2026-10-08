@@ -3,7 +3,8 @@
  * @brief   Buat Supabase server client + cek status admin untuk Route Handler
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Cache hasil isAdmin per request untuk hemat query
+ *          - Catat audit login admin ke tabel log bila dibutuhkan
  */
 // Server client meneruskan cookies auth sehingga RLS mengenali admin.
 // WAJIB dipanggil dari konteks request (Route Handler / Server Component),
@@ -11,6 +12,7 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
+// Tujuan: teruskan cookies auth ke Supabase agar RLS mengenali admin di sisi server.
 export async function supabaseServer() {
   const store = await cookies();
   return createServerClient(
@@ -32,6 +34,7 @@ export async function supabaseServer() {
   );
 }
 
+// Tujuan: jadikan satu-satunya penentu hak admin agar guard tidak tersebar di tiap halaman.
 // Mengembalikan true hanya jika user login dan user_id terdaftar di tabel admins.
 export async function isAdmin(): Promise<boolean> {
   const supabase = await supabaseServer();

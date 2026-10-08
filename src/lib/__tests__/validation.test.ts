@@ -1,4 +1,10 @@
-// Uji aturan validasi form anonim (nama + isi) sebelum implementasi ada.
+/**
+ * @file    src/lib/__tests__/validation.test.ts
+ * @brief   Uji aturan validasi form anonim sebelum implementasi dipakai
+ * @author  ray
+ * @created 2026-10-08
+ * @todo    - Tambah kasus batas tepat (2, 50, 1000 karakter)
+ */
 import { describe, expect, it } from "vitest";
 import { validateIsi, validateNama } from "../../models/validation";
 

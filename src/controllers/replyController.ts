@@ -3,7 +3,8 @@
  * @brief   Orkestrasi penulisan reply flat dengan badge admin otomatis
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah saring tautan/spam pola berulang sebelum simpan
+ *          - Pisahkan limit reply admin dan peserta bila perlu
  */
 // Penulis yang sedang login sebagai admin otomatis mendapat is_admin=true,
 // sehingga View bisa memberi badge ADMIN tanpa input tambahan dari form.
@@ -19,6 +20,7 @@ export interface ReplyInput {
   ip: string;
 }
 
+// Tujuan: jadikan satu pintu penulisan reply termasuk penentuan badge admin otomatis.
 export async function createReplyFlow(input: ReplyInput): Promise<string> {
   const namaError = validateNama(input.nama);
   if (namaError) throw new Error(namaError);

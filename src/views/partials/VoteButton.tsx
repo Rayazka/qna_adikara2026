@@ -3,7 +3,8 @@
  * @brief   Render tombol vote satu-kali per pertanyaan dengan guard browser lokal
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah animasi centang agar umpan balik vote terasa
+ *          - Sinkronkan status voted antar tab via event storage
  */
 // Guard ganda: localStorage mencegah klik ulang di browser ini, server menolak
 // double vote via unique voter_hash (409). Count optimistis langsung naik.
@@ -11,10 +12,12 @@
 
 import { useState } from "react";
 
+// Tujuan: buat kunci penyimpanan lokal unik per pertanyaan agar status vote awet saat reload.
 function votedKey(questionId: string): string {
   return `voted:${questionId}`;
 }
 
+// Tujuan: naikkan pointing pertanyaan populer dengan sekali klik yang tidak bisa diulang.
 export function VoteButton({
   questionId,
   initialCount,
@@ -28,6 +31,7 @@ export function VoteButton({
   );
   const [busy, setBusy] = useState(false);
 
+  // Tujuan: kirim vote lalu kunci tombol; 409 dari server berarti voter ini memang sudah vote.
   async function vote() {
     if (done || busy) return;
     setBusy(true);

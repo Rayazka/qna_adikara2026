@@ -3,7 +3,8 @@
  * @brief   Render chips filter 6 kategori lomba + Semua untuk board
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tampilkan jumlah pertanyaan per chip dari agregat kategori
+ *          - Tambah mode dropdown saat daftar kategori bertambah
  */
 // Controlled component: BoardView menyimpan kategori aktif dan memfilter list.
 // Kategori aktif memakai merah brand agar terlihat jelas di HP.
@@ -19,6 +20,7 @@ export const FILTER_OPTIONS = [
   "Cybersecurity",
 ] as const;
 
+// Tujuan: biarkan peserta menyaring board ke cabang lombanya tanpa reload halaman.
 export function CategoryFilter({
   value,
   onChange,

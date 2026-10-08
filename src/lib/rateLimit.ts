@@ -4,11 +4,13 @@
  * @author  ray
  * @created 2026-10-08
  * @todo    - Ganti ke Redis/Upstash saat traffic event melebihi 1 instance
+ *          - Kirim header Retry-After agar client tahu kapan boleh coba lagi
  */
 // MVP memakai Map in-memory (cukup untuk 1 instance Vercel saat event).
 // Aturan: tanya 1/menit, reply 3/menit, vote 10/menit per IP (diterapkan di controller).
 const hits = new Map<string, number[]>();
 
+// Tujuan: putuskan dalam O(n) kecil apakah request boleh lanjut, sekaligus bersihkan hit kedaluwarsa.
 // Mengembalikan true jika request masih dalam limit (dan mencatat hit ini).
 export function checkRate(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();

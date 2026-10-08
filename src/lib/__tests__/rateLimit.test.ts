@@ -1,4 +1,10 @@
-// Uji rate limiter in-memory sebelum implementasi ada.
+/**
+ * @file    src/lib/__tests__/rateLimit.test.ts
+ * @brief   Uji rate limiter in-memory sebelum implementasi dipakai
+ * @author  ray
+ * @created 2026-10-08
+ * @todo    - Tambah kasus jendela kedaluwarsa dengan waktu palsu
+ */
 import { expect, it } from "vitest";
 import { checkRate } from "../rateLimit";
 

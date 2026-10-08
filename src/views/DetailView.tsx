@@ -3,7 +3,8 @@
  * @brief   Render halaman detail shareable: resmi di atas + reply flat live
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah tombol bagikan native (Web Share API) untuk HP
+ *          - Tambah pertanyaan terkait se-kategori di bawah diskusi
  */
 // Menerima questionId dari route /q/[id]. Jawaban resmi (is_official) selalu di
 // atas; sisanya kronologis. Tombol salin tautan untuk sebar via WA/MC.
@@ -18,12 +19,14 @@ import { ReplyForm } from "./partials/ReplyForm";
 import { ReplyList } from "./partials/ReplyList";
 import { VoteButton } from "./partials/VoteButton";
 
+// Tujuan: sajikan satu pertanyaan sebagai halaman rujukan yang layak disebar.
 export function DetailView({ questionId }: { questionId: string }) {
   const [question, setQuestion] = useState<Question | null>(null);
   const [replies, setReplies] = useState<Reply[]>([]);
   const [missing, setMissing] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Tujuan: sinkronkan pertanyaan + reply; dipanggil ulang tiap ada reply baru via realtime.
   const load = useCallback(async () => {
     try {
       const supabase = supabaseBrowser();
@@ -93,6 +96,7 @@ export function DetailView({ questionId }: { questionId: string }) {
   const official = replies.find((reply) => reply.is_official);
   const rest = replies.filter((reply) => !reply.is_official);
 
+  // Tujuan: salin URL halaman ini agar MC/peserta mudah sebar via WA.
   async function copyLink() {
     await navigator.clipboard.writeText(window.location.href);
     setCopied(true);

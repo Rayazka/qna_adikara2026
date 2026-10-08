@@ -3,7 +3,8 @@
  * @brief   Render papan utama: form tanya + cari + filter + sort + daftar live
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah filter Belum Terjawab untuk dorong admin bottom-up
+ *          - Simpan preferensi sort di URL agar bisa dibagikan
  */
 // Client component: baca publik via supabaseBrowser (diizinkan RLS SELECT),
 // tulis via /api/* (Controller). Baca langsung di sini pengecualian MVC yang
@@ -20,6 +21,7 @@ import { QuestionCard } from "./partials/QuestionCard";
 
 type SortMode = "top" | "new";
 
+// Tujuan: jadikan satu layar pusat event: bertanya, mencari, menyaring, dan mem-vote.
 export function BoardView() {
   const [rows, setRows] = useState<Question[]>([]);
   const [category, setCategory] = useState<string>("Semua");
@@ -27,6 +29,7 @@ export function BoardView() {
   const [sort, setSort] = useState<SortMode>("top");
   const [loading, setLoading] = useState(true);
 
+  // Tujuan: muat ulang 100 item terbaru; dipakai ulang oleh realtime dan form.
   const load = useCallback(async () => {
     const supabase = supabaseBrowser();
     const { data } = await supabase

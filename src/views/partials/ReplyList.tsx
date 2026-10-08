@@ -3,12 +3,14 @@
  * @brief   Render daftar reply flat kronologis dengan badge peran penulis
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Tambah paginasi saat reply puluhan agar halaman ringan
+ *          - Sembunyikan reply terhapus halus bila moderasi lunak dipakai
  */
 // Flat 1 level tanpa vote dan tanpa balasan-ke-balasan (keputusan MVP).
 // Badge ADMIN merah, Peserta abu-abu agar jawaban panitia mudah dikenali.
 import type { Reply } from "@/models/types";
 
+// Tujuan: tampilkan diskusi apa adanya dengan peran jelas agar info admin tidak tertukar.
 export function ReplyList({ replies }: { replies: Reply[] }) {
   if (replies.length === 0) {
     return <p className="text-sm text-gray-500">Belum ada tanggapan. Jadilah yang pertama!</p>;

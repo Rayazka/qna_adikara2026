@@ -3,11 +3,13 @@
  * @brief   Render batas error global dengan tombol coba lagi
  * @author  ray
  * @created 2026-10-08
- * @todo    none
+ * @todo    - Kirim laporan error ke Sentry saat monitoring dipasang
+ *          - Bedakan pesan untuk gangguan jaringan vs server
  */
 // Wajib client component karena menerima retry dari Next.js.
 "use client";
 
+// Tujuan: tangkap error render agar user dapat tombol pulih, bukan layar kosong.
 export default function GlobalError({
   reset,
 }: {
