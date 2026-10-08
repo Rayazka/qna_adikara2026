@@ -1,5 +1,5 @@
 /**
- * @file    app/layout.tsx
+ * @file    src/app/layout.tsx
  * @brief   Render root HTML shell berbahasa Indonesia untuk QnA ADIKARA
  * @author  ray
  * @created 2026-10-08
