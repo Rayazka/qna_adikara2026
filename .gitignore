@@ -11,3 +11,7 @@ out/
 # misc
 .DS_Store
 *.log
+
+# local planning docs (PRD, tech spec, tasks, plans) — tidak di-push
+.agents/
+docs/
