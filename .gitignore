@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# env (keys Supabase/Vercel jangan ke-commit)
+.env*.local
+
+# misc
+.DS_Store
+*.log
