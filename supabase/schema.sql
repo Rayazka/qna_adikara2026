@@ -68,7 +68,10 @@ create policy "public read votes" on votes for select using (true);
 create policy "public insert votes" on votes for insert with check (true);
 
 -- Setiap vote baru menaikkan counter agar board tidak perlu COUNT(*) tiap render.
-create or replace function bump_vote() returns trigger as $$
+-- SECURITY DEFINER wajib: trigger jalan saat INSERT anonim, dan anon dilarang
+-- UPDATE questions oleh RLS sehingga tanpa ini setiap vote akan gagal.
+create or replace function bump_vote() returns trigger
+security definer set search_path = public as $$
 begin
   update questions set vote_count = vote_count + 1 where id = new.question_id;
   return new;
