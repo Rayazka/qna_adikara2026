@@ -20,7 +20,8 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  // Tujuan: autentikasi via Supabase lalu lempar ke dashboard; gagal tampilkan pesan ramah.
+  // Tujuan: autentikasi, pastikan user terdaftar di tabel admins, baru lempar ke dashboard.
+  // Cek keanggotaan di sini agar salah user_id langsung terbaca pesannya, bukan mental diam-diam.
   async function login(event: React.FormEvent) {
     event.preventDefault();
     if (busy) return;
@@ -28,9 +29,19 @@ export default function AdminLogin() {
     setBusy(true);
     try {
       const supabase = supabaseBrowser();
-      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-      if (authError) {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+      if (authError || !data.user) {
         setError("Email atau password salah");
+        return;
+      }
+      const { data: admin } = await supabase
+        .from("admins")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .single();
+      if (!admin) {
+        await supabase.auth.signOut();
+        setError("Akun ini login OK tapi belum terdaftar sebagai admin. Cek user_id di tabel admins.");
         return;
       }
       window.location.href = "/admin";
