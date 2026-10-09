@@ -46,7 +46,7 @@ export async function AdminView() {
 
           <div className="flex gap-2">
             <Link href="/" className="button-outline text-xs !py-1.5 !px-3">
-              Lihat Board Publik ↗
+              Lihat Board Publik
             </Link>
           </div>
         </div>
@@ -91,7 +91,7 @@ export async function AdminView() {
                   </span>
                   {row.is_pinned && (
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-800">
-                      📌 Disematkan
+                      Disematkan
                     </span>
                   )}
                   <span className="text-xs text-gray-400">
@@ -120,22 +120,22 @@ export async function AdminView() {
                   href={`/q/${row.id}`}
                   className="rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-black transition-colors"
                 >
-                  Buka & Jawab ↗
+                  Buka & Jawab
                 </Link>
 
                 <form action={actionTogglePin.bind(null, row.id, !row.is_pinned)}>
                   <button
                     type="submit"
-                    className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
                   >
-                    {row.is_pinned ? "Lepas Pin" : "📌 Sematkan (Pin)"}
+                    {row.is_pinned ? "Lepas Pin" : "Sematkan (Pin)"}
                   </button>
                 </form>
 
                 <form action={actionToggleAnswered.bind(null, row.id, !row.is_answered)}>
                   <button
                     type="submit"
-                    className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     {row.is_answered ? "Tandai Belum" : "Tandai Terjawab"}
                   </button>
@@ -166,7 +166,7 @@ export async function AdminView() {
                   </select>
                   <button
                     type="submit"
-                    className="rounded-full border border-gray-200 bg-gray-100 px-2.5 py-1 text-xs font-bold hover:bg-gray-200 transition-colors"
+                    className="rounded-full border border-gray-200 bg-gray-100 px-2.5 py-1 text-xs font-bold hover:bg-gray-200 transition-colors cursor-pointer"
                   >
                     Ubah
                   </button>
@@ -175,7 +175,7 @@ export async function AdminView() {
                 <form action={actionDeleteQuestion.bind(null, row.id)} className="ml-auto">
                   <button
                     type="submit"
-                    className="rounded-full border border-red-200 bg-red-50/50 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-100 transition-colors"
+                    className="rounded-full border border-red-200 bg-red-50/50 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
                   >
                     Hapus Pertanyaan
                   </button>
@@ -218,7 +218,7 @@ async function ReplyModeration({ questionId }: { questionId: string }) {
               <span className="text-gray-600">{reply.isi}</span>
               {reply.is_official && (
                 <span className="ml-1 text-[10px] font-bold text-emerald-600">
-                  (⭐ RESMI)
+                  (RESMI)
                 </span>
               )}
             </div>
@@ -227,16 +227,16 @@ async function ReplyModeration({ questionId }: { questionId: string }) {
                 <form action={actionMarkOfficial.bind(null, questionId, reply.id)}>
                   <button
                     type="submit"
-                    className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-100 transition-colors"
+                    className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-700 hover:bg-emerald-100 transition-colors cursor-pointer"
                   >
-                    ⭐ Jadikan Resmi
+                    Jadikan Resmi
                   </button>
                 </form>
               )}
               <form action={actionDeleteReply.bind(null, questionId, reply.id)}>
                 <button
                   type="submit"
-                  className="rounded-full bg-red-50 border border-red-200 px-2 py-0.5 text-[10px] font-bold text-red-600 hover:bg-red-100 transition-colors"
+                  className="rounded-full bg-red-50 border border-red-200 px-2 py-0.5 text-[10px] font-bold text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
                 >
                   Hapus
                 </button>

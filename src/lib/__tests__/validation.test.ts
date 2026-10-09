@@ -9,7 +9,12 @@ import { describe, expect, it } from "vitest";
 import { validateIsi, validateNama } from "../../models/validation";
 
 describe("validateNama", () => {
-  it("menolak nama terlalu pendek", () => {
+  it("menerima nama kosong (akan default ke Peserta)", () => {
+    expect(validateNama("")).toBeNull();
+    expect(validateNama(undefined)).toBeNull();
+  });
+
+  it("menolak nama jika diisi tapi terlalu pendek", () => {
     expect(validateNama("A")).toBeTruthy();
   });
 

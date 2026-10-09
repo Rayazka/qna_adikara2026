@@ -14,7 +14,7 @@ import { createQuestion } from "@/models/question";
 import { isCategorySlug, validateIsi, validateNama } from "@/models/validation";
 
 export interface AskInput {
-  nama: string;
+  nama?: string;
   isi: string;
   categorySlug: string;
   ip: string;
@@ -32,5 +32,6 @@ export async function createQuestionFlow(input: AskInput): Promise<string> {
   }
   const category = await findCategoryBySlug(input.categorySlug);
   if (!category) throw new Error("Kategori tidak valid");
-  return createQuestion({ nama: input.nama, isi: input.isi, categoryId: category.id });
+  const namaPenanya = input.nama?.trim() || "Peserta";
+  return createQuestion({ nama: namaPenanya, isi: input.isi, categoryId: category.id });
 }

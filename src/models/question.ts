@@ -12,7 +12,7 @@
 import { supabaseServer } from "@/lib/supabaseServer";
 import type { Question } from "./types";
 
-const SELECT = "id,nama_penanya,isi,category_id,is_pinned,is_answered,vote_count,created_at,categories(name,slug)";
+const SELECT = "id,nama_penanya,isi,category_id,is_pinned,is_answered,vote_count,created_at,categories(name,slug),replies(id,question_id,nama,isi,is_admin,is_official,created_at)";
 
 // Tujuan: ambil papan terbaru (pin dulu) dalam 1 query join agar board render sekali jalan.
 export async function listQuestions(limit = 100): Promise<Question[]> {

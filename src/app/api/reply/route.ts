@@ -24,13 +24,14 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Body harus JSON valid" }, { status: 400 });
   }
-  if (typeof payload.question_id !== "string" || typeof payload.nama !== "string" || typeof payload.isi !== "string") {
-    return NextResponse.json({ error: "question_id, nama, dan isi wajib diisi" }, { status: 400 });
+  if (typeof payload.question_id !== "string" || typeof payload.isi !== "string") {
+    return NextResponse.json({ error: "question_id dan isi wajib diisi" }, { status: 400 });
   }
+  const nama = typeof payload.nama === "string" ? payload.nama : "";
   try {
     const id = await createReplyFlow({
       questionId: payload.question_id,
-      nama: payload.nama,
+      nama,
       isi: payload.isi,
       ip: clientIp(request),
     });

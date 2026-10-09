@@ -36,7 +36,7 @@ export function DetailView({ questionId }: { questionId: string }) {
         .select("id,nama_penanya,isi,category_id,is_pinned,is_answered,vote_count,created_at,categories(name,slug)")
         .eq("id", questionId)
         .single<Question>();
-      // ID tidak valid (bukan UUID) membuat Supabase error → tangkap di bawah.
+      // ID tidak valid (bukan UUID) membuat Supabase error -> tangkap di bawah.
       if (!detail) {
         setMissing(true);
         return;
@@ -75,14 +75,13 @@ export function DetailView({ questionId }: { questionId: string }) {
       <div className="min-h-screen bg-gray-50/50">
         <Header />
         <main className="mx-auto max-w-2xl px-4 py-16 text-center space-y-4">
-          <span className="text-5xl block">🔍</span>
           <h1 className="text-xl font-bold text-gray-900">Pertanyaan Tidak Ditemukan</h1>
           <p className="text-sm text-gray-500">
             Pertanyaan ini mungkin telah dihapus atau tautan yang kamu buka kurang tepat.
           </p>
           <div>
             <Link href="/" className="button">
-              ← Kembali ke Board QnA
+              Kembali ke Board QnA
             </Link>
           </div>
         </main>
@@ -123,16 +122,18 @@ export function DetailView({ questionId }: { questionId: string }) {
             href="/"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-red-700 transition-colors"
           >
-            <span>←</span> Kembali ke Board
+            <span className="text-base leading-none">←</span> Kembali ke Board
           </Link>
 
           <button
             type="button"
             onClick={() => void copyLink()}
-            className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:border-gray-300 hover:bg-gray-50 transition-all"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
           >
-            <span>{copied ? "✅" : "🔗"}</span>
-            <span>{copied ? "Tautan Tersalin!" : "Salin Tautan"}</span>
+            <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            <span>{copied ? "Tautan Tersalin" : "Salin Tautan"}</span>
           </button>
         </div>
 
@@ -144,8 +145,8 @@ export function DetailView({ questionId }: { questionId: string }) {
                 {question.categories?.name ?? "Umum"}
               </span>
               {question.is_pinned && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-800">
-                  <span>📌</span> Disematkan
+                <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-800">
+                  Disematkan
                 </span>
               )}
             </div>
@@ -193,7 +194,7 @@ export function DetailView({ questionId }: { questionId: string }) {
         <div className="space-y-4 pt-2">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-              <span>💬</span> Tanggapan & Diskusi
+              Tanggapan & Diskusi
               <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 font-bold">
                 {rest.length}
               </span>

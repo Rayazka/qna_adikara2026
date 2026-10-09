@@ -23,10 +23,10 @@ export function OfficialAnswer({ reply }: { reply: Reply | undefined }) {
     >
       <div className="flex items-center gap-2 mb-2">
         <span
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black text-white shadow-xs"
+          className="inline-flex items-center rounded-full px-3 py-1 text-xs font-black text-white shadow-xs"
           style={{ backgroundColor: "var(--adikara-red)" }}
         >
-          <span>⭐</span> JAWABAN RESMI PANITIA
+          JAWABAN RESMI PANITIA
         </span>
         <span className="text-xs font-semibold text-gray-500">• {reply.nama}</span>
       </div>

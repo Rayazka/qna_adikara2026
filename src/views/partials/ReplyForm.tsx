@@ -1,18 +1,18 @@
 /**
  * @file    src/views/partials/ReplyForm.tsx
- * @brief   Render form tanggapan peserta/admin di halaman detail pertanyaan
+ * @brief   Render form tanggapan tanpa login (langsung isi tanggapan)
  * @author  ray
  * @created 2026-10-08
- * @todo    - Isi otomatis nama dari pertanyaan terakhir user
- *          - Tambah pratinjau sebelum kirim untuk cegah salah ketik
+ * @todo    - Tambah pratinjau sebelum kirim untuk cegah salah ketik
+ *          - Simpan draf ke localStorage agar tidak hilang saat reload
  */
 // Mengirim ke POST /api/reply; penulis login-admin otomatis berlabel ADMIN
-// oleh server sehingga form tidak butuh pilihan peran. Sukses → onSent reload list.
+// oleh server. Sukses → onSent reload list.
 "use client";
 
 import { useState } from "react";
 
-// Tujuan: tampung tanggapan lanjutan tanpa memecah alur baca diskusi.
+// Tujuan: tampung tanggapan lanjutan secara instan tanpa mewajibkan isi nama.
 export function ReplyForm({
   questionId,
   onSent,
@@ -20,7 +20,6 @@ export function ReplyForm({
   questionId: string;
   onSent: () => void;
 }) {
-  const [nama, setNama] = useState("");
   const [isi, setIsi] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -35,14 +34,13 @@ export function ReplyForm({
       const response = await fetch("/api/reply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question_id: questionId, nama, isi }),
+        body: JSON.stringify({ question_id: questionId, isi }),
       });
       const body = (await response.json()) as { id?: string; error?: string };
       if (!response.ok) {
-        setError(body.error ?? "Gagal mengirim, coba lagi");
+        setError(body.error ?? "Gagal mengirim tanggapan, silakan coba lagi.");
         return;
       }
-      setNama("");
       setIsi("");
       onSent();
     } finally {
@@ -52,18 +50,9 @@ export function ReplyForm({
 
   return (
     <form onSubmit={submit} className="adikara-card p-4 sm:p-5 space-y-3">
-      <h4 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
-        <span>✍️</span> Tulis Tanggapan
+      <h4 className="text-sm font-bold text-gray-900">
+        Tulis Tanggapan
       </h4>
-
-      <input
-        value={nama}
-        onChange={(event) => setNama(event.target.value)}
-        placeholder="Nama / Panggilan kamu"
-        maxLength={50}
-        className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
-        required
-      />
 
       <textarea
         value={isi}
@@ -71,21 +60,21 @@ export function ReplyForm({
         placeholder="Berikan tanggapan atau informasi tambahan..."
         rows={2}
         maxLength={1000}
-        className="w-full rounded-xl border border-gray-200 p-3.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all resize-none"
+        className="w-full rounded-xl border border-gray-200 p-3 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all resize-none bg-gray-50/50 focus:bg-white placeholder:text-gray-400"
         required
       />
 
       {error !== "" && (
         <div className="rounded-xl bg-red-50 p-2.5 text-xs font-semibold text-red-600 border border-red-100">
-          ⚠️ {error}
+          {error}
         </div>
       )}
 
       <div className="flex justify-end pt-1">
         <button
           type="submit"
-          disabled={busy}
-          className="button text-xs sm:text-sm !py-2.5 !px-5"
+          disabled={busy || isi.trim().length === 0}
+          className="button text-xs sm:text-sm !py-2 !px-5"
         >
           {busy ? "Mengirim..." : "Kirim Tanggapan"}
         </button>

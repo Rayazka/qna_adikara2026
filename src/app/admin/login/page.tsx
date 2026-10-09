@@ -107,7 +107,7 @@ export default function AdminLogin() {
 
             {error !== "" && (
               <div className="rounded-xl bg-red-50 p-3 text-xs font-semibold text-red-600 border border-red-100">
-                ⚠️ {error}
+                {error}
               </div>
             )}
 

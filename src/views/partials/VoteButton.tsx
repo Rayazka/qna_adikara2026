@@ -63,14 +63,20 @@ export function VoteButton({
       disabled={done || busy}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
         done
-          ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-default"
-          : "border border-red-200 text-red-700 bg-red-50/70 hover:bg-red-100 hover:scale-105 active:scale-95 shadow-sm"
+          ? "bg-gray-100 text-gray-600 border border-gray-200 cursor-default"
+          : "border border-red-200 text-red-700 bg-red-50 hover:bg-red-100 hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
       }`}
       aria-label={`Dukung pertanyaan (${count} vote)`}
     >
-      <span className={done ? "text-green-600 font-black" : "text-red-600 font-black text-sm leading-none"}>
-        {done ? "✓" : "▲"}
-      </span>
+      {done ? (
+        <svg className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      ) : (
+        <svg className="w-3.5 h-3.5 text-red-600 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+      )}
       <span>{count}</span>
     </button>
   );

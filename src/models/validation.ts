@@ -24,9 +24,11 @@ export function isCategorySlug(value: string): value is CategorySlug {
   return (CATEGORY_SLUGS as readonly string[]).includes(value);
 }
 
-// Tujuan: jaga identitas penanya tetap bermakna tanpa memaksa akun.
-export function validateNama(nama: string): string | null {
+// Tujuan: jaga identitas penanya tetap bermakna tanpa memaksa akun (default 'Peserta' bila kosong).
+export function validateNama(nama?: string): string | null {
+  if (!nama) return null;
   const value = nama.trim();
+  if (value.length === 0) return null;
   if (value.length < 2) return "Nama minimal 2 karakter";
   if (value.length > 50) return "Nama maksimal 50 karakter";
   return null;

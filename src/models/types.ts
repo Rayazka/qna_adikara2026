@@ -24,6 +24,7 @@ export interface Question {
   vote_count: number;
   created_at: string;
   categories?: Pick<Category, "name" | "slug"> | null;
+  replies?: Reply[] | null;
 }
 
 export interface Reply {

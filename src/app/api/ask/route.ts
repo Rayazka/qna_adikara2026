@@ -24,12 +24,13 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Body harus JSON valid" }, { status: 400 });
   }
-  if (typeof payload.nama !== "string" || typeof payload.isi !== "string" || typeof payload.category_slug !== "string") {
-    return NextResponse.json({ error: "nama, isi, dan category_slug wajib diisi" }, { status: 400 });
+  if (typeof payload.isi !== "string" || typeof payload.category_slug !== "string") {
+    return NextResponse.json({ error: "isi dan category_slug wajib diisi" }, { status: 400 });
   }
+  const nama = typeof payload.nama === "string" ? payload.nama : "Peserta";
   try {
     const id = await createQuestionFlow({
-      nama: payload.nama,
+      nama,
       isi: payload.isi,
       categorySlug: payload.category_slug,
       ip: clientIp(request),

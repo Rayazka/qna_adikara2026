@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "QnA ADIKARA",
   description:
-    "Papan tanya jawab resmi ADIKARA — Umum, Inovasi, Entrepreneur, Data Mining, Competitive Programming, Cybersecurity",
+    "Papan tanya jawab resmi ADIKARA: Umum, Inovasi, Entrepreneur, Data Mining, Competitive Programming, Cybersecurity",
 };
 
 // Tujuan: bungkus semua halaman dengan shell HTML + font + metadata Indonesia.

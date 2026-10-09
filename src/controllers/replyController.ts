@@ -15,7 +15,7 @@ import { validateIsi, validateNama } from "@/models/validation";
 
 export interface ReplyInput {
   questionId: string;
-  nama: string;
+  nama?: string;
   isi: string;
   ip: string;
 }
@@ -32,9 +32,10 @@ export async function createReplyFlow(input: ReplyInput): Promise<string> {
     throw new Error("Terlalu cepat, tunggu sebentar");
   }
   const admin = await isAdmin();
+  const namaPenulis = input.nama?.trim() || (admin ? "Panitia ADIKARA" : "Peserta");
   return createReply({
     questionId: input.questionId,
-    nama: input.nama,
+    nama: namaPenulis,
     isi: input.isi,
     isAdmin: admin,
   });
