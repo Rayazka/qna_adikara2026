@@ -51,31 +51,45 @@ export function ReplyForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-2 rounded border p-3">
+    <form onSubmit={submit} className="adikara-card p-4 sm:p-5 space-y-3">
+      <h4 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+        <span>✍️</span> Tulis Tanggapan
+      </h4>
+
       <input
         value={nama}
         onChange={(event) => setNama(event.target.value)}
-        placeholder="Nama kamu"
+        placeholder="Nama / Panggilan kamu"
         maxLength={50}
-        className="w-full rounded border p-2"
+        className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+        required
       />
+
       <textarea
         value={isi}
         onChange={(event) => setIsi(event.target.value)}
-        placeholder="Tulis tanggapan..."
+        placeholder="Berikan tanggapan atau informasi tambahan..."
         rows={2}
         maxLength={1000}
-        className="w-full rounded border p-2"
+        className="w-full rounded-xl border border-gray-200 p-3.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all resize-none"
+        required
       />
-      {error !== "" && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={busy}
-        className="rounded px-4 py-2 text-white disabled:opacity-60"
-        style={{ backgroundColor: "var(--adikara-red)" }}
-      >
-        {busy ? "Mengirim..." : "Kirim Tanggapan"}
-      </button>
+
+      {error !== "" && (
+        <div className="rounded-xl bg-red-50 p-2.5 text-xs font-semibold text-red-600 border border-red-100">
+          ⚠️ {error}
+        </div>
+      )}
+
+      <div className="flex justify-end pt-1">
+        <button
+          type="submit"
+          disabled={busy}
+          className="button text-xs sm:text-sm !py-2.5 !px-5"
+        >
+          {busy ? "Mengirim..." : "Kirim Tanggapan"}
+        </button>
+      </div>
     </form>
   );
 }

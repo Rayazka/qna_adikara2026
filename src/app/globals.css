@@ -1,31 +1,138 @@
 @import "tailwindcss";
 
-/* Token brand ADIKARA (locked, lihat Tech Spec §3.5). Komponen memakai
-   var(--...) agar rebrand cukup ubah file ini. Dark mode bawaan template
-   dimatikan supaya teks di venue tetap terbaca (background selalu putih). */
+@import "tailwindcss";
+
+/* Style Guide Resmi ADIKARA */
 :root {
-  --background: #fff;
-  --foreground: #10142b;
-  --adikara-red: #c9070f;
-  --adikara-dark-red: #a90009;
-  --pattern-pink: #f9dfe1;
-  --font-family-sans: var(--font-geist-sans), "Product Sans", Arial, sans-serif;
-  --section-space: 80px;
-  --section-space-mobile: 52px;
+  /* Brand colors */
+  --adikara-red: #C9070F;
+  --adikara-dark-red: #A90009;
+  --adikara-pattern-pink: #F9DFE1;
+
+  /* Base colors */
+  --adikara-background: #FFFFFF;
+  --adikara-foreground: #10142B;
+
+  /* Typography */
+  --adikara-font: "Google Sans", var(--font-geist-sans), "Product Sans", Arial, sans-serif;
+
+  /* Layout */
+  --adikara-section-space: 80px;
+  --adikara-section-space-mobile: 52px;
+
+  /* Components */
+  --adikara-radius-pill: 999px;
+  --adikara-navbar-shadow: 0 8px 32px #00000014;
+  --adikara-button-shadow: 0 4px 14px -6px #C9070F66;
+
+  /* Gradients */
+  --adikara-gradient: linear-gradient(
+    90deg,
+    #ED1C24,
+    #FFCA28
+  );
+
+  /* Mapping for backward compatibility with components */
+  --background: var(--adikara-background);
+  --foreground: var(--adikara-foreground);
+  --pattern-pink: var(--adikara-pattern-pink);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--adikara-background);
+  --color-foreground: var(--adikara-foreground);
   --color-brand: var(--adikara-red);
   --color-brand-dark: var(--adikara-dark-red);
-  --color-pattern: var(--pattern-pink);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-pattern: var(--adikara-pattern-pink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-family-sans);
+  margin: 0;
+  background: var(--adikara-background);
+  color: var(--adikara-foreground);
+  font-family: var(--adikara-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--adikara-radius-pill);
+  background: var(--adikara-red);
+  color: white;
+  font-family: inherit;
+  font-weight: 600;
+  box-shadow: var(--adikara-button-shadow);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--adikara-dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px -4px #C9070F88;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: 1.5px solid var(--adikara-red);
+  border-radius: var(--adikara-radius-pill);
+  background: transparent;
+  color: var(--adikara-red);
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button-outline:hover:not(:disabled) {
+  background: var(--adikara-pattern-pink);
+  transform: translateY(-1px);
+}
+
+.section {
+  padding-block: var(--adikara-section-space);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: var(--adikara-section-space-mobile);
+  }
+}
+
+/* Glass & Card effects */
+.adikara-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(16, 20, 43, 0.05);
+  transition: all 0.2s ease;
+}
+
+.adikara-card:hover {
+  border-color: #D1D5DB;
+  box-shadow: 0 10px 28px -4px rgba(16, 20, 43, 0.08);
+}
+
+.adikara-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--adikara-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
 }

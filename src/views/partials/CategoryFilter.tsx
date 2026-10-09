@@ -7,7 +7,7 @@
  *          - Tambah mode dropdown saat daftar kategori bertambah
  */
 // Controlled component: BoardView menyimpan kategori aktif dan memfilter list.
-// Kategori aktif memakai merah brand agar terlihat jelas di HP.
+// Desain pill modern dengan transisi halus sesuai style guide ADIKARA.
 "use client";
 
 export const FILTER_OPTIONS = [
@@ -29,7 +29,7 @@ export function CategoryFilter({
   onChange: (next: string) => void;
 }) {
   return (
-    <div className="flex gap-2 overflow-x-auto py-2">
+    <div className="flex gap-2 overflow-x-auto py-2 no-scrollbar">
       {FILTER_OPTIONS.map((option) => {
         const active = option === value;
         return (
@@ -37,11 +37,18 @@ export function CategoryFilter({
             key={option}
             type="button"
             onClick={() => onChange(option)}
-            className="shrink-0 rounded-full px-3 py-1 text-sm"
+            className="shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200"
             style={
               active
-                ? { backgroundColor: "var(--adikara-red)", color: "#fff" }
-                : { backgroundColor: "var(--pattern-pink)", color: "var(--foreground)" }
+                ? {
+                    backgroundColor: "var(--adikara-red)",
+                    color: "#FFFFFF",
+                    boxShadow: "var(--adikara-button-shadow)",
+                  }
+                : {
+                    backgroundColor: "var(--adikara-pattern-pink)",
+                    color: "var(--adikara-foreground)",
+                  }
             }
           >
             {option}

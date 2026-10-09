@@ -11,6 +11,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabaseClient";
 import type { Question, Reply } from "@/models/types";
 import { Header } from "./partials/Header";
@@ -71,25 +72,33 @@ export function DetailView({ questionId }: { questionId: string }) {
 
   if (missing) {
     return (
-      <>
+      <div className="min-h-screen bg-gray-50/50">
         <Header />
-        <main className="mx-auto max-w-2xl space-y-2 p-4">
-          <p className="font-bold">Pertanyaan tidak ditemukan.</p>
-          <a href="/" className="text-sm underline">
-            ← Kembali ke board
-          </a>
+        <main className="mx-auto max-w-2xl px-4 py-16 text-center space-y-4">
+          <span className="text-5xl block">🔍</span>
+          <h1 className="text-xl font-bold text-gray-900">Pertanyaan Tidak Ditemukan</h1>
+          <p className="text-sm text-gray-500">
+            Pertanyaan ini mungkin telah dihapus atau tautan yang kamu buka kurang tepat.
+          </p>
+          <div>
+            <Link href="/" className="button">
+              ← Kembali ke Board QnA
+            </Link>
+          </div>
         </main>
-      </>
+      </div>
     );
   }
+
   if (!question) {
     return (
-      <>
+      <div className="min-h-screen bg-gray-50/50">
         <Header />
-        <main className="mx-auto max-w-2xl p-4">
-          <p className="text-sm text-gray-500">Memuat...</p>
+        <main className="mx-auto max-w-3xl space-y-4 p-4 sm:p-6">
+          <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
+          <div className="h-44 bg-white rounded-2xl border border-gray-100 animate-pulse" />
         </main>
-      </>
+      </div>
     );
   }
 
@@ -104,27 +113,101 @@ export function DetailView({ questionId }: { questionId: string }) {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50/50">
       <Header />
-      <main className="mx-auto max-w-2xl space-y-4 p-4">
-        <a href="/" className="text-sm underline">
-          ← Kembali
-        </a>
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="text-xl font-bold">{question.isi}</h1>
-          <VoteButton questionId={question.id} initialCount={question.vote_count} />
+
+      <main className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
+        {/* Navigation & Action Bar */}
+        <div className="flex items-center justify-between gap-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-red-700 transition-colors"
+          >
+            <span>←</span> Kembali ke Board
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => void copyLink()}
+            className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:border-gray-300 hover:bg-gray-50 transition-all"
+          >
+            <span>{copied ? "✅" : "🔗"}</span>
+            <span>{copied ? "Tautan Tersalin!" : "Salin Tautan"}</span>
+          </button>
         </div>
-        <p className="text-sm text-gray-600">
-          {question.nama_penanya} • {question.categories?.name ?? "Umum"} •{" "}
-          {question.is_answered ? "Terjawab" : "Belum terjawab"}
-        </p>
-        <OfficialAnswer reply={official} />
-        <ReplyList replies={rest} />
-        <ReplyForm questionId={question.id} onSent={() => void load()} />
-        <button type="button" onClick={() => void copyLink()} className="text-sm underline">
-          {copied ? "Tautan tersalin!" : "Salin tautan pertanyaan"}
-        </button>
+
+        {/* Question Header Card */}
+        <div className="adikara-card p-5 sm:p-7 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-gray-800 border border-red-100">
+                {question.categories?.name ?? "Umum"}
+              </span>
+              {question.is_pinned && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-800">
+                  <span>📌</span> Disematkan
+                </span>
+              )}
+            </div>
+
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
+                question.is_answered
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  : "bg-amber-50 text-amber-700 border border-amber-200"
+              }`}
+            >
+              <span className={`h-1.5 w-1.5 rounded-full ${question.is_answered ? "bg-emerald-500" : "bg-amber-500"}`} />
+              {question.is_answered ? "Sudah Terjawab" : "Menunggu Jawaban Panitia"}
+            </span>
+          </div>
+
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 leading-snug">
+            {question.isi}
+          </h1>
+
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 font-bold text-gray-700">
+                {question.nama_penanya.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <p className="font-bold text-gray-800">{question.nama_penanya}</p>
+                <p className="text-[10px] text-gray-400">Penanya</p>
+              </div>
+            </div>
+
+            <VoteButton questionId={question.id} initialCount={question.vote_count} />
+          </div>
+        </div>
+
+        {/* Official Answer Section */}
+        {official && (
+          <div className="space-y-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400">Jawaban Resmi</h2>
+            <OfficialAnswer reply={official} />
+          </div>
+        )}
+
+        {/* Discussion / Replies */}
+        <div className="space-y-4 pt-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+              <span>💬</span> Tanggapan & Diskusi
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 font-bold">
+                {rest.length}
+              </span>
+            </h2>
+          </div>
+
+          <ReplyList replies={rest} />
+        </div>
+
+        {/* Reply Form */}
+        <div className="pt-2">
+          <ReplyForm questionId={question.id} onSent={() => void load()} />
+        </div>
       </main>
-    </>
+    </div>
   );
 }

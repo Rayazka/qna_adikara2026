@@ -11,6 +11,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabaseClient";
 
 // Tujuan: beri jalan masuk admin yang sederhana (email+password) tanpa mengganggu publik.
@@ -51,33 +53,80 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="mx-auto max-w-sm space-y-3 p-6">
-      <h1 className="text-xl font-bold">Login Admin ADIKARA</h1>
-      <form onSubmit={login} className="space-y-2">
-        <input
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Email admin"
-          type="email"
-          className="w-full rounded border p-2"
-        />
-        <input
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="Password"
-          type="password"
-          className="w-full rounded border p-2"
-        />
-        {error !== "" && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={busy}
-          className="w-full rounded p-2 text-white disabled:opacity-60"
-          style={{ backgroundColor: "var(--adikara-red)" }}
-        >
-          {busy ? "Masuk..." : "Login"}
-        </button>
-      </form>
-    </main>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center px-4">
+        <Link href="/" className="inline-flex items-center gap-2 mb-4">
+          <div className="h-12 w-12 rounded-full bg-white p-1 shadow-md border border-red-100 flex items-center justify-center">
+            <Image
+              src="/adikara-icon.svg"
+              alt="Logo ADIKARA"
+              width={38}
+              height={38}
+              className="object-contain"
+            />
+          </div>
+        </Link>
+        <h2 className="text-2xl font-black text-gray-900 tracking-tight">
+          Login Panel Panitia
+        </h2>
+        <p className="mt-1 text-xs text-gray-500">
+          Khusus panitia & admin cabang lomba ADIKARA 2026
+        </p>
+      </div>
+
+      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md px-4">
+        <div className="adikara-card p-6 sm:p-8 space-y-5">
+          <form onSubmit={login} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Email Akun Panitia
+              </label>
+              <input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="panitia@adikara.com"
+                type="email"
+                className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Password
+              </label>
+              <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="••••••••"
+                type="password"
+                className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+                required
+              />
+            </div>
+
+            {error !== "" && (
+              <div className="rounded-xl bg-red-50 p-3 text-xs font-semibold text-red-600 border border-red-100">
+                ⚠️ {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={busy}
+              className="button w-full !py-3"
+            >
+              {busy ? "Memproses..." : "Masuk ke Panel Admin"}
+            </button>
+          </form>
+
+          <div className="text-center pt-2 border-t border-gray-100">
+            <Link href="/" className="text-xs font-semibold text-gray-500 hover:text-red-700 transition-colors">
+              ← Kembali ke Halaman Publik
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

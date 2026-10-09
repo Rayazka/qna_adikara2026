@@ -1,17 +1,17 @@
 /**
  * @file    src/views/BoardView.tsx
- * @brief   Render papan utama: form tanya + cari + filter + sort + daftar live
+ * @brief   Render papan utama: hero banner + form tanya + cari + filter + sort + daftar live
  * @author  ray
  * @created 2026-10-08
  * @todo    - Tambah filter Belum Terjawab untuk dorong admin bottom-up
  *          - Simpan preferensi sort di URL agar bisa dibagikan
  */
 // Client component: baca publik via supabaseBrowser (diizinkan RLS SELECT),
-// tulis via /api/* (Controller). Baca langsung di sini pengecualian MVC yang
-// disengaja agar realtime 1 tab tanpa API list tambahan. Pinned selalu di atas.
+// tulis via /api/* (Controller). Pinned selalu di atas.
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { supabaseBrowser } from "@/lib/supabaseClient";
 import type { Question } from "@/models/types";
 import { AskForm } from "./partials/AskForm";
@@ -69,34 +69,131 @@ export function BoardView() {
     );
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50/50">
       <Header />
-      <main className="mx-auto max-w-2xl space-y-4 p-4">
-        <h1 className="text-2xl font-bold">Tanya Jawab ADIKARA</h1>
-        <AskForm onCreated={() => void load()} />
-        <input
-          value={keyword}
-          onChange={(event) => setKeyword(event.target.value)}
-          placeholder="Cari pertanyaan..."
-          className="w-full rounded border p-2"
-        />
-        <CategoryFilter value={category} onChange={setCategory} />
-        <div className="flex gap-3 text-sm">
-          <button type="button" onClick={() => setSort("top")} className={sort === "top" ? "font-bold underline" : "underline"}>
-            Top Vote
-          </button>
-          <button type="button" onClick={() => setSort("new")} className={sort === "new" ? "font-bold underline" : "underline"}>
-            Terbaru
-          </button>
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-white border-b border-gray-100 py-10 sm:py-14">
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-red-50 blur-3xl pointer-events-none" />
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 relative z-10">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="text-center sm:text-left space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700 border border-red-100">
+                <span>🔥</span> Portal Tanya Jawab Resmi ADIKARA 2026
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight leading-tight">
+                Punya Pertanyaan Seputar Cabang Lomba?
+              </h1>
+              <p className="text-sm sm:text-base text-gray-600">
+                Tanyakan langsung tanpa perlu login. Berikan dukungan vote agar pertanyaan penting dijawab oleh panitia.
+              </p>
+            </div>
+
+            <div className="hidden sm:flex shrink-0 items-center justify-center">
+              <div className="h-28 w-28 relative rounded-3xl bg-gradient-to-tr from-red-600 to-amber-400 p-1 shadow-lg shadow-red-500/20">
+                <div className="h-full w-full bg-white rounded-[22px] flex items-center justify-center p-3">
+                  <Image
+                    src="/adikara-icon.svg"
+                    alt="Maskot ADIKARA"
+                    width={80}
+                    height={80}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        {loading && <p className="text-sm text-gray-500">Memuat pertanyaan...</p>}
-        {!loading && visible.length === 0 && (
-          <p className="text-sm text-gray-500">Belum ada pertanyaan. Jadilah yang pertama bertanya!</p>
-        )}
-        {visible.map((row) => (
-          <QuestionCard key={row.id} question={row} />
-        ))}
+      </section>
+
+      {/* Main Content Area */}
+      <main className="mx-auto max-w-4xl space-y-6 px-4 py-8 sm:px-6">
+        {/* Form Tanya */}
+        <AskForm onCreated={() => void load()} />
+
+        {/* Toolbar Pencarian, Filter Kategori & Sort */}
+        <div className="space-y-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+            {/* Search input */}
+            <div className="relative flex-1">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                🔍
+              </span>
+              <input
+                value={keyword}
+                onChange={(event) => setKeyword(event.target.value)}
+                placeholder="Cari pertanyaan lomba..."
+                className="w-full rounded-full border border-gray-200 pl-10 pr-4 py-2.5 text-sm bg-white focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 shadow-xs transition-all"
+              />
+              {keyword !== "" && (
+                <button
+                  type="button"
+                  onClick={() => setKeyword("")}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-xs text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Sort Toggle */}
+            <div className="flex items-center self-center sm:self-auto bg-gray-100 p-1 rounded-full text-xs font-bold border border-gray-200">
+              <button
+                type="button"
+                onClick={() => setSort("top")}
+                className={`px-3.5 py-1.5 rounded-full transition-all ${
+                  sort === "top"
+                    ? "bg-white text-gray-900 shadow-xs"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                🔥 Terpopuler
+              </button>
+              <button
+                type="button"
+                onClick={() => setSort("new")}
+                className={`px-3.5 py-1.5 rounded-full transition-all ${
+                  sort === "new"
+                    ? "bg-white text-gray-900 shadow-xs"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                ⏱️ Terbaru
+              </button>
+            </div>
+          </div>
+
+          {/* Kategori Filter */}
+          <CategoryFilter value={category} onChange={setCategory} />
+        </div>
+
+        {/* Question List */}
+        <div className="space-y-3 pt-2">
+          {loading && (
+            <div className="space-y-3">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="h-28 rounded-2xl bg-white animate-pulse border border-gray-100 p-4" />
+              ))}
+            </div>
+          )}
+
+          {!loading && visible.length === 0 && (
+            <div className="adikara-card p-10 text-center space-y-3">
+              <span className="text-4xl block">💭</span>
+              <h3 className="font-bold text-gray-800 text-lg">Belum ada pertanyaan</h3>
+              <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                {keyword !== "" || category !== "Semua"
+                  ? "Tidak ada pertanyaan yang sesuai dengan filter atau kata kunci."
+                  : "Jadilah peserta pertama yang mengajukan pertanyaan seputar lomba!"}
+              </p>
+            </div>
+          )}
+
+          {visible.map((row) => (
+            <QuestionCard key={row.id} question={row} />
+          ))}
+        </div>
       </main>
-    </>
+    </div>
   );
 }

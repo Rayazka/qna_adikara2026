@@ -1,6 +1,6 @@
 /**
  * @file    src/views/partials/AskForm.tsx
- * @brief   Render form tanya cepat tanpa login di atas board
+ * @brief   Render form tanya cepat tanpa login di atas board dengan desain modern
  * @author  ray
  * @created 2026-10-08
  * @todo    - Tambah penghitung sisa karakter agar user tahu batas
@@ -56,42 +56,79 @@ export function AskForm({ onCreated }: { onCreated: () => void }) {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-2 rounded border p-3">
-      <input
-        value={nama}
-        onChange={(event) => setNama(event.target.value)}
-        placeholder="Nama kamu"
-        maxLength={50}
-        className="w-full rounded border p-2"
-      />
-      <select
-        value={slug}
-        onChange={(event) => setSlug(event.target.value)}
-        className="w-full rounded border p-2"
-      >
-        {CATEGORY_SLUGS.map((option) => (
-          <option key={option} value={option}>
-            {LABELS[option]}
-          </option>
-        ))}
-      </select>
-      <textarea
-        value={isi}
-        onChange={(event) => setIsi(event.target.value)}
-        placeholder="Tulis pertanyaanmu..."
-        rows={3}
-        maxLength={1000}
-        className="w-full rounded border p-2"
-      />
-      {error !== "" && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={busy}
-        className="rounded px-4 py-2 text-white disabled:opacity-60"
-        style={{ backgroundColor: "var(--adikara-red)" }}
-      >
-        {busy ? "Mengirim..." : "Kirim Pertanyaan"}
-      </button>
+    <form onSubmit={submit} className="adikara-card p-5 sm:p-6 space-y-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+        <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
+          <span>💬</span> Ajukan Pertanyaan
+        </h3>
+        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-700">
+          Publik & Anonim
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-semibold text-gray-600 mb-1">
+            Nama / Panggilan <span className="text-red-500">*</span>
+          </label>
+          <input
+            value={nama}
+            onChange={(event) => setNama(event.target.value)}
+            placeholder="mis. Arya - Tim Code"
+            maxLength={50}
+            className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-gray-600 mb-1">
+            Cabang Lomba / Kategori <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={slug}
+            onChange={(event) => setSlug(event.target.value)}
+            className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all"
+          >
+            {CATEGORY_SLUGS.map((option) => (
+              <option key={option} value={option}>
+                {LABELS[option]}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-600 mb-1">
+          Pertanyaanmu <span className="text-red-500">*</span>
+        </label>
+        <textarea
+          value={isi}
+          onChange={(event) => setIsi(event.target.value)}
+          placeholder="Tulis pertanyaanmu secara jelas dan sopan..."
+          rows={3}
+          maxLength={1000}
+          className="w-full rounded-xl border border-gray-200 p-3.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all resize-none"
+          required
+        />
+      </div>
+
+      {error !== "" && (
+        <div className="rounded-xl bg-red-50 p-3 text-xs font-semibold text-red-600 border border-red-100 flex items-center gap-2">
+          <span>⚠️</span> {error}
+        </div>
+      )}
+
+      <div className="flex justify-end pt-1">
+        <button
+          type="submit"
+          disabled={busy}
+          className="button w-full sm:w-auto"
+        >
+          {busy ? "Mengirim..." : "Kirim Pertanyaan 🚀"}
+        </button>
+      </div>
     </form>
   );
 }

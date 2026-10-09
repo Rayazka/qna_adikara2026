@@ -3,7 +3,7 @@
  * @brief   Render tombol vote satu-kali per pertanyaan dengan guard browser lokal
  * @author  ray
  * @created 2026-10-08
- * @todo    - Tambah animasi centang agar umpan balik vote terasa
+ * @todo    - Tambah animasi getar halus saat vote berhasil
  *          - Sinkronkan status voted antar tab via event storage
  */
 // Guard ganda: localStorage mencegah klik ulang di browser ini, server menolak
@@ -61,10 +61,17 @@ export function VoteButton({
       type="button"
       onClick={vote}
       disabled={done || busy}
-      className="rounded border px-2 py-1 text-sm disabled:opacity-60"
-      style={done ? undefined : { borderColor: "var(--adikara-red)", color: "var(--adikara-red)" }}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
+        done
+          ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-default"
+          : "border border-red-200 text-red-700 bg-red-50/70 hover:bg-red-100 hover:scale-105 active:scale-95 shadow-sm"
+      }`}
+      aria-label={`Dukung pertanyaan (${count} vote)`}
     >
-      {done ? `✓ ${count}` : `▲ ${count}`}
+      <span className={done ? "text-green-600 font-black" : "text-red-600 font-black text-sm leading-none"}>
+        {done ? "✓" : "▲"}
+      </span>
+      <span>{count}</span>
     </button>
   );
 }
